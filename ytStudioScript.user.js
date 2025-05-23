@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ytStudio
 // @namespace    http://tampermonkey.net/
-// @version      2025.5.23.1
+// @version      2025.5.23.2
 // @description  try to take over the world!
 // @author       You
 // @match        https://studio.youtube.com/*
@@ -191,7 +191,7 @@
                 searchBox.value = `${nextNumber} ${endNum}`;
                 searchBox.dispatchEvent(new InputEvent("input", { bubbles: true }));
                 await sleep(2000);
-                const vids = document.getElementsByClassName("ytcp-entity-card");
+                const vids = document.getElementsByClassName("ytcp-entity-card title");
                 for (let v in vids) {
                     if (v.textContent.trim() == searchBox.value) {
                         v.click();
