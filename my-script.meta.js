@@ -56,9 +56,9 @@
     pickReuseVidBtn.textContent = 'PickReuseVid';
     styleButton(pickReuseVidBtn);
 
-    const next2endScreen = document.createElement('button');
-    next2endScreen.textContent = 'NextToEndScreen';
-    styleButton(next2endScreen);
+    const next2endScreenBtn = document.createElement('button');
+    next2endScreenBtn.textContent = 'NextToEndScreen';
+    styleButton(next2endScreenBtn);
 
     const vidNameInput = document.createElement('input');
 
@@ -147,30 +147,7 @@
         return document.getElementById("original-filename").textContent.trim().replace(".mp4", '');
     }
 
-    pickReuseVidBtn.addEventListener('click', async () => {
-        document.getElementById('reuse-details-button').click();
-        await sleep(1000);
-        const searchBox = document.getElementById("search-yours");
-        searchBox.value = vidNameInput.value;
-        searchBox.dispatchEvent(new InputEvent("input", { bubbles: true }));
-        await sleep(2000);
-
-        const card = document.getElementsByClassName("ytcp-entity-card")[0];
-        card.click();
-
-        await sleep(1000);
-        document.querySelector(".ytcp-uploads-reuse-details-selection-dialog #select-button").click();
-
-        await sleep(1000);
-        const textbox = document.getElementById("textbox");
-        let text = textbox.textContent;
-        const fileName = getFileName();
-        text = replaceNumberRange(text, fileName);
-        textbox.textContent = text;
-        textbox.dispatchEvent(new InputEvent("input", { bubbles: true }));
-    });
-
-    next2endScreen.addEventListener('click', async () => {
+    async function next2endScreen() {
         const fileName = getFileName();
         const parts = fileName.split('-');
         const lastNumber = parseInt(parts[parts.length - 1], 10);
@@ -236,11 +213,40 @@
         document.getElementById("done-button").click();
         await sleep(5000);
         document.querySelector("#close-button button").click();
+    }
+
+    pickReuseVidBtn.addEventListener('click', async () => {
+        document.getElementById('reuse-details-button').click();
+        await sleep(1000);
+        const searchBox = document.getElementById("search-yours");
+        searchBox.value = vidNameInput.value;
+        searchBox.dispatchEvent(new InputEvent("input", { bubbles: true }));
+        await sleep(2000);
+
+        const card = document.getElementsByClassName("ytcp-entity-card")[0];
+        card.click();
+
+        await sleep(1000);
+        document.querySelector(".ytcp-uploads-reuse-details-selection-dialog #select-button").click();
+
+        await sleep(1000);
+        const textbox = document.getElementById("textbox");
+        let text = textbox.textContent;
+        const fileName = getFileName();
+        text = replaceNumberRange(text, fileName);
+        textbox.textContent = text;
+        textbox.dispatchEvent(new InputEvent("input", { bubbles: true }));
+
+        if (ckAutoThumb.checked) {
+            await next2endScreen();
+        }
     });
+
+    next2endScreenBtn.addEventListener('click', next2endScreen);
 
     bar.appendChild(vidNameInput); bar.appendChild(lastVidInput);
     bar.appendChild(pickReuseVidBtn);
-    bar.appendChild(next2endScreen);
+    bar.appendChild(next2endScreenBtn);
     bar.appendChild(labelPublish);
     bar.appendChild(labelAutoThumb);
 
