@@ -188,12 +188,13 @@
                 if (endNum > lastVidInput.value) {
                     endNum = lastVidInput.value;
                 }
-                searchBox.value = `${nextNumber} ${endNum}`;
+                const filter = `${nextNumber} ${endNum}`;
+                searchBox.value = filter;
                 searchBox.dispatchEvent(new InputEvent("input", { bubbles: true }));
                 await sleep(2000);
                 const vids = document.getElementsByClassName("ytcp-entity-card title");
                 for (let v of vids) {
-                    if (v.textContent.trim() == searchBox.value) {
+                    if (v.textContent.trim() == filter) {
                         v.click();
                         break;
                     }
