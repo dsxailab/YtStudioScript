@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ytStudio
 // @namespace    http://tampermonkey.net/
-// @version      2025.5.23.2
+// @version      2025.5.24.1
 // @description  try to take over the world!
 // @author       You
 // @match        https://studio.youtube.com/*
@@ -221,7 +221,13 @@
         document.querySelector("#close-button button").click();
     }
 
-    pickReuseVidBtn.addEventListener('click', async () => {
+    async function start() {
+        const vid = document.querySelector('.ytcp-video-row #video-thumbnail-container');
+        if (!vid) {
+            return;
+        }
+        vid.click();
+        await sleep(1000);
         document.getElementById('reuse-details-button').click();
         await sleep(1000);
         const searchBox = document.getElementById("search-yours");
@@ -246,7 +252,11 @@
         if (ckAutoThumb.checked) {
             await next2endScreen();
         }
-    });
+        await sleep(3000);
+        start();
+    }
+
+    pickReuseVidBtn.addEventListener('click', start);
 
     next2endScreenBtn.addEventListener('click', next2endScreen);
 
