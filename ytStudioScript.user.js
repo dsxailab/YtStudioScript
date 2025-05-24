@@ -222,38 +222,44 @@
     }
 
     async function start() {
-        const vid = document.querySelector('.ytcp-video-row #video-thumbnail-container');
-        if (!vid) {
+        const vids = document.querySelectorAll('.ytcp-video-row #video-thumbnail-container');
+        if (!vids) {
             return;
         }
-        vid.click();
-        await sleep(1000);
-        document.getElementById('reuse-details-button').click();
-        await sleep(1000);
-        const searchBox = document.getElementById("search-yours");
-        searchBox.value = vidNameInput.value;
-        searchBox.dispatchEvent(new InputEvent("input", { bubbles: true }));
-        await sleep(2000);
+        for (const vid of vids) {
+            const row = vid.closest("div#row-container")
+            const visibility = row.querySelector("span.label-span.style-scope.ytcp-video-row").textContent;
+            if (visibility != "Draft") {
+                continue;
+            }
+            vid.click();
+            await sleep(1000);
+            document.getElementById('reuse-details-button').click();
+            await sleep(1000);
+            const searchBox = document.getElementById("search-yours");
+            searchBox.value = vidNameInput.value;
+            searchBox.dispatchEvent(new InputEvent("input", { bubbles: true }));
+            await sleep(2000);
 
-        const card = document.getElementsByClassName("ytcp-entity-card")[0];
-        card.click();
+            const card = document.getElementsByClassName("ytcp-entity-card")[0];
+            card.click();
 
-        await sleep(1000);
-        document.querySelector(".ytcp-uploads-reuse-details-selection-dialog #select-button").click();
+            await sleep(1000);
+            document.querySelector(".ytcp-uploads-reuse-details-selection-dialog #select-button").click();
 
-        await sleep(1000);
-        const textbox = document.getElementById("textbox");
-        let text = textbox.textContent;
-        const fileName = getFileName();
-        text = replaceNumberRange(text, fileName);
-        textbox.textContent = text;
-        textbox.dispatchEvent(new InputEvent("input", { bubbles: true }));
+            await sleep(1000);
+            const textbox = document.getElementById("textbox");
+            let text = textbox.textContent;
+            const fileName = getFileName();
+            text = replaceNumberRange(text, fileName);
+            textbox.textContent = text;
+            textbox.dispatchEvent(new InputEvent("input", { bubbles: true }));
 
-        if (ckAutoThumb.checked) {
-            await next2endScreen();
+            if (ckAutoThumb.checked) {
+                await next2endScreen();
+            }
+            await sleep(3000);
         }
-        await sleep(3000);
-        start();
     }
 
     pickReuseVidBtn.addEventListener('click', start);
