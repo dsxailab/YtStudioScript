@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ytStudio
 // @namespace    http://tampermonkey.net/
-// @version      2025.5.25.7
+// @version      2025.5.25.8
 // @description  try to take over the world!
 // @author       You
 // @match        https://studio.youtube.com/*
@@ -170,15 +170,14 @@
         const editingDraft = window.location.pathname.endsWith("/edit");
         let alreadySelected = false;
         if (editingDraft) {
-            document.getElementById("endscreen-editor-link").click()
+            document.getElementById("endscreen-editor-link").click();
+            await sleep(1000);
         } else {
             document.getElementById("next-button").click();
             await sleep(1000);
             const endScreenBtn = document.getElementById("endscreens-button");
             alreadySelected = endScreenBtn.innerText == "Edit";
             endScreenBtn.click();
-        }
-        if (!alreadySelected) {
             await sleep(4000);
             let card = document.querySelector('div.card[aria-label="Import from latest video"]');
             if (!card) {
@@ -186,6 +185,8 @@
             }
             card.click();
             await sleep(500);
+        }
+        if (!alreadySelected) {
             const el = document.getElementsByTagName("ytve-endscreen-editor-preview-overlay-item")[1];
             syntheticClick(el);
             await sleep(2000);
