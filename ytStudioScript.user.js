@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ytStudio
 // @namespace    http://tampermonkey.net/
-// @version      2025.5.25.1
+// @version      2025.5.25.2
 // @description  try to take over the world!
 // @author       You
 // @match        https://studio.youtube.com/*
@@ -233,7 +233,7 @@
                 continue;
             }
             const processing = row.getElementsByTagName("ytcp-video-upload-progress");
-            if (processing) {
+            if (processing.length > 0) {
                 continue;
             }
             vid.click();
