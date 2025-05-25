@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ytStudio
 // @namespace    http://tampermonkey.net/
-// @version      2025.5.25.3
+// @version      2025.5.25.4
 // @description  try to take over the world!
 // @author       You
 // @match        https://studio.youtube.com/*
@@ -147,6 +147,21 @@
         return document.getElementById("original-filename").textContent.trim().replace(".mp4", '');
     }
 
+    async function filterAndClickNextVid(filter) {
+        const searchBox = document.getElementById("search-yours");
+        searchBox.value = filter;
+        searchBox.dispatchEvent(new InputEvent("input", { bubbles: true }));
+        await sleep(2000);
+        const vids = document.getElementsByClassName("ytcp-entity-card title");
+        for (let v of vids) {
+            if (v.textContent.trim() == filter || v.textContent.trim().startsWith(filter)) {
+                v.click();
+                return true;
+            }
+        }
+        return false;
+    }
+
     async function next2endScreen() {
         const fileName = getFileName();
         const parts = fileName.split('-');
@@ -186,21 +201,16 @@
 
                 radio.click();
                 await sleep(1000);
-                const searchBox = document.getElementById("search-yours");
+
                 let endNum = nextNumber + 50 - 1;
                 if (endNum > lastVidInput.value) {
                     endNum = lastVidInput.value;
                 }
                 const filter = `${nextNumber} ${endNum}`;
-                searchBox.value = filter;
-                searchBox.dispatchEvent(new InputEvent("input", { bubbles: true }));
-                await sleep(2000);
-                const vids = document.getElementsByClassName("ytcp-entity-card title");
-                for (let v of vids) {
-                    if (v.textContent.trim() == filter) {
-                        v.click();
-                        break;
-                    }
+
+                const findNextVid = await filterAndClickNextVid(filter);
+                if (!findNextVid) {
+                    await filterAndClickNextVid(vidNameInput.value + filter.replace(" ", "-"))
                 }
                 await sleep(2000);
             }
