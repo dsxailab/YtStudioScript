@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ytStudio
 // @namespace    http://tampermonkey.net/
-// @version      2025.5.25.5
+// @version      2025.5.25.6
 // @description  try to take over the world!
 // @author       You
 // @match        https://studio.youtube.com/*
@@ -167,8 +167,12 @@
         const parts = fileName.split('-');
         const lastNumber = parseInt(parts[parts.length - 1], 10);
         const nextNumber = lastNumber + 1;
-
-        document.getElementById("next-button").click();
+        const editingDraft = window.location.pathname.endsWith("/edit");
+        if (editingDraft) {
+            document.getElementById("endscreen-editor-link").click()
+        } else {
+            document.getElementById("next-button").click();
+        }
         await sleep(1000);
         const endScreenBtn = document.getElementById("endscreens-button");
         const alreadySelected = endScreenBtn.innerText == "Edit";
