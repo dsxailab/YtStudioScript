@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ytStudio
 // @namespace    http://tampermonkey.net/
-// @version      2025.5.25.4
+// @version      2025.5.25.5
 // @description  try to take over the world!
 // @author       You
 // @match        https://studio.youtube.com/*
@@ -210,7 +210,7 @@
 
                 const findNextVid = await filterAndClickNextVid(filter);
                 if (!findNextVid) {
-                    await filterAndClickNextVid(vidNameInput.value + filter.replace(" ", "-"))
+                    await filterAndClickNextVid(vidNameInput.value + " " + filter.replace(" ", "-"))
                 }
                 await sleep(2000);
             }
