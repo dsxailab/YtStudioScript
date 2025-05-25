@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ytStudio
 // @namespace    http://tampermonkey.net/
-// @version      2025.5.25.6
+// @version      2025.5.25.7
 // @description  try to take over the world!
 // @author       You
 // @match        https://studio.youtube.com/*
@@ -168,16 +168,17 @@
         const lastNumber = parseInt(parts[parts.length - 1], 10);
         const nextNumber = lastNumber + 1;
         const editingDraft = window.location.pathname.endsWith("/edit");
+        let alreadySelected = false;
         if (editingDraft) {
             document.getElementById("endscreen-editor-link").click()
         } else {
             document.getElementById("next-button").click();
-        }
-        await sleep(1000);
-        const endScreenBtn = document.getElementById("endscreens-button");
-        const alreadySelected = endScreenBtn.innerText == "Edit";
-        if (!alreadySelected) {
+            await sleep(1000);
+            const endScreenBtn = document.getElementById("endscreens-button");
+            alreadySelected = endScreenBtn.innerText == "Edit";
             endScreenBtn.click();
+        }
+        if (!alreadySelected) {
             await sleep(4000);
             let card = document.querySelector('div.card[aria-label="Import from latest video"]');
             if (!card) {
