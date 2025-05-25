@@ -160,7 +160,10 @@
         if (!alreadySelected) {
             endScreenBtn.click();
             await sleep(4000);
-            const card = document.querySelector('div.card[aria-label="Import from latest video"]');
+            let card = document.querySelector('div.card[aria-label="Import from latest video"]');
+            if (!card) {
+                card = document.getElementsByClassName("card style-scope ytve-endscreen-template-picker")[2];
+            }
             card.click();
             await sleep(500);
             const el = document.getElementsByTagName("ytve-endscreen-editor-preview-overlay-item")[1];
