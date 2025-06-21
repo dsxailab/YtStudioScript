@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ytStudio
 // @namespace    http://tampermonkey.net/
-// @version      2025.5.25.8
+// @version      2025.6.21.8
 // @description  try to take over the world!
 // @author       You
 // @match        https://studio.youtube.com/*
@@ -232,12 +232,11 @@
         if (ckPublish.checked) {
             document.querySelector("tp-yt-paper-radio-button[name='PUBLIC'").click();
         } else {
-            document.querySelector("tp-yt-paper-radio-button[name='UNLISTED'").click();
+            document.querySelector("tp-yt-paper-radio-button[name='PRIVATE'").click();
         }
 
         document.getElementById("done-button").click();
-        await sleep(5000);
-        document.querySelector("#close-button button").click();
+        await sleep(2000);
     }
 
     async function start() {
